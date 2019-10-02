@@ -3,7 +3,7 @@
 var _ = require('lodash');
 
 var gamesystemService = require('../services/gamesystem.service');
-var videogameRepository = require('../repositories/videogame.repository');
+//var videogameRepository = require('../repositories/videogame.repository');
 var messageHelper = require('../helpers/message.helper');
 
 ////////////////////////////////////////////////////////////////////////////////

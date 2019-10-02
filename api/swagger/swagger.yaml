@@ -263,7 +263,7 @@ paths:
 # complex objects have schema definitions
 definitions:
 
-  VideoGame:
+  Videogame:
     type: object
     properties:
       name:
