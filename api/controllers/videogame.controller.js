@@ -6,7 +6,7 @@ const {Videogames} = require('../models');
 // Module Name
 const MODULE_NAME = '[Videogame Controller]';
 // Error Messages
-const GS_CT_ERR_GAMESYSTEM_NOT_FOUND = 'Vdeo game not found';
+const GS_CT_ERR_GAMESYSTEM_NOT_FOUND = 'Video game not found';
 // Success Messages
 const GS_CT_DELETED_SUCCESSFULLY = 'Video game deleted successfully';
 

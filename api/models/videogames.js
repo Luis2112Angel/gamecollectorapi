@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     developer: DataTypes.STRING,
     gamesystem: DataTypes.STRING,
     genre: DataTypes.STRING,
-    year: DataTypes.STRING
+    year: DataTypes.INTEGER
   }, {});
   Videogames.associate = function(models) {
     // associations can be defined here
