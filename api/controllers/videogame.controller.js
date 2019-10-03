@@ -10,20 +10,20 @@ const GS_CT_ERR_GAMESYSTEM_NOT_FOUND = 'Vdeo game not found';
 // Success Messages
 const GS_CT_DELETED_SUCCESSFULLY = 'Video game deleted successfully';
 
-function getVideogames(req, res) {
+function getVideoGames(req, res) {
     try {
 
         Videogames.findAll()
-            .then(videogameList => res.status(200).send(videogameList))
+            .then(videoGameList => res.status(200).send(videoGameList))
             .catch(error => res.status(500).send(error));
 
     } catch (error) {
         console.log("Was an error");
-        controllerHelper.handleErrorResponse(MODULE_NAME, getVideogames.name, error, res);
+        controllerHelper.handleErrorResponse(MODULE_NAME, getVideoGames.name, error, res);
     }
 }
 
-function createVideogame(req, res) {
+function createVideoGame(req, res) {
 
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
@@ -40,17 +40,17 @@ function createVideogame(req, res) {
                 gamesystem: parameters.gamesystem,
                 genre: parameters.genre,
                 year: parameters.year,
-        }).then(videoGame => res.status(201).send(videoGame))
+        }).then(videoGames => res.status(201).send(videoGames))
             .catch(error => res.status(400).send(error));
 
     } catch (error) {
         console.log("Was an error");
-        controllerHelper.handleErrorResponse(MODULE_NAME, createVideogame.name, error, res);
+        controllerHelper.handleErrorResponse(MODULE_NAME, createVideoGame.name, error, res);
     }
 
 }
 
-function getVideogameById(req, res) {
+function getVideoGameById(req, res) {
     try {
 
         var id = req.swagger.params.id.value;
@@ -60,7 +60,7 @@ function getVideogameById(req, res) {
 
     } catch (error) {
         console.log("Was an error");
-        controllerHelper.handleErrorResponse(MODULE_NAME, getVideogameById.name, error, res);
+        controllerHelper.handleErrorResponse(MODULE_NAME, getVideoGameById.name, error, res);
     }
 }
 
@@ -84,7 +84,7 @@ function deleteVideogame(req, res) {
     }).catch(error => console.log("There was an error: " + error));
 }
 
-function updateVideogame(req, res) {
+function updateVideoGame(req, res) {
 
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
@@ -112,17 +112,17 @@ function updateVideogame(req, res) {
 
     } catch (error) {
         console.log("Was an error");
-        controllerHelper.handleErrorResponse(MODULE_NAME, updateVideogame.name, error, res);
+        controllerHelper.handleErrorResponse(MODULE_NAME, updateVideoGame.name, error, res);
     }
 }
 
 module.exports =
 {
-    getVideogames,
-    getVideogameById,
-    createVideogame,
-    updateVideogame,
-    deleteVideogame,
+    getVideoGames,
+    getVideoGameById,
+    createVideoGame,
+    updateVideoGame,
+    deleteVideoGame,
     GS_CT_ERR_GAMESYSTEM_NOT_FOUND,
     GS_CT_DELETED_SUCCESSFULLY,
     MODULE_NAME

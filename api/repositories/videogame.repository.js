@@ -94,17 +94,17 @@ function createVideoGame(videogameP) {
   return getVideoGameById(newVideoGame.id);
 }
 
-function updateVideoGame(params) {
+function updateVideoGame(videogameP) {
 
-  var idToSearch = params.id;
+  var idToSearch = videogameP.id;
   var videogameToUpdate = getVideoGameById(idToSearch);
 
   if (videogameToUpdate !== undefined) {
-    videogameToUpdate.name = params.name;
-    videogameToUpdate.developer = params.developer;
-    videogameToUpdate.gamesystem = params.gamesystem;
-    videogameToUpdate.genre = params.genre;
-    videogameToUpdate.year = params.year;
+    videogameToUpdate.name = videogameP.name;
+    videogameToUpdate.developer = videogameP.developer;
+    videogameToUpdate.gamesystem = videogameP.gamesystem;
+    videogameToUpdate.genre = videogameP.genre;
+    videogameToUpdate.year = videogameP.year;
   }
 
   return videogameToUpdate;
@@ -126,7 +126,7 @@ function deleteVideoGame(id) {
   }
 }
 
-function stripVideoGames(fields, videogames) {
+/*function stripVideoGames(fields, videogames) {
 
   var arrayFields = fields.split(',');
 
@@ -136,7 +136,7 @@ function stripVideoGames(fields, videogames) {
 
   return strippedVideoGameResults;
 }
-
+*/
 function initDefaultVideoGames(videogamesSet) {
   videogames = videogamesSet.slice();
 }
