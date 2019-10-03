@@ -7,7 +7,7 @@ var shortid = require('shortid');
 // PROPERTIES
 ////////////////////////////////////////////////////////////////////////////////
 
-// Defines an initial set of gamesystems 
+// Defines an initial set of videogames 
 var videogames = [];
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -20,46 +20,16 @@ function getVideogames(params) {
 
   // Filter by name
   if (params.name !== undefined) {
-    videogamesResult = _.filter(videogamesResult, { name: params.name });
-  }
-  // Filter by developer
-  if (params.developer !== undefined) {
-    videogamesResult = _.filter(videogamesResult, { developer: params.developer });
-  }
-  // Filter by game system
-  if (params.gamesystem !== undefined) {
-    videogamesResult = _.filter(videogamesResult, { gamesystem: params.gamesystem });
-  }
-  // Filter by genre
-  if (params.genre !== undefined) {
-    videogamesResult = _.filter(videogamesResult, { genre: params.genre });
-  }
-  // Filter by year
-  if (params.year !== undefined) {
-    videogamesResult = _.filter(videogamesResult, { year: params.year });
+    videogamesResult = _.filter(videogames, { name: params.name });
   }
 
-  // Order by field
+  // Order by name
   if (params.sort !== undefined) {
-
-    var direction;
-    var nameField;
-
-    if (_.startsWith(params.sort, '-')) {
-      direction = 'desc';
-      nameField = params.sort.substring(1);
-    } else {
-      direction = 'asc';
-      nameField = params.sort;
+    if (params.sort === 'name') {
+      videogamesResult = _.orderBy(videogamesResult, ['name'], ['asc']);
+    } else if (params.sort === '-name') {
+      videogamesResult = _.orderBy(videogamesResult, ['name'], ['desc']);
     }
-
-    videogamesResult = _.orderBy(videogamesResult, [nameField], [direction]);
-
-  }
-
-  // Returning only specific fields
-  if (params.fields !== undefined) {
-    videogamesResult = stripVideogames(params.fields, videogamesResult);
   }
 
   return videogamesResult;
@@ -71,40 +41,36 @@ function getVideogameById(id) {
   });
 }
 
-function getVideoGameByName(name) {
+function getVideogameByName(name) {
   return videogames.find(element => {
     return element.name === name;
   });
 }
 
-function createVideoGame(videogameP) {
+function createVideogame(videogameP) {
 
   var newVideogame = {
     id: shortid.generate(),
     name: videogameP.name,
-    developer: videogameP.developer,
-    gamesystem: videogameP.gamesystem,
-    genre: videogameP.genre,
-    year: videogameP.year,
+    description: videogameP.description,
     image: videogameP.image
   };
 
   videogames.push(newVideogame);
 
-  return getVideogameById(newVideogame.id);
+  return getVideogameByPK(newVideogame.id);
 }
 
 function updateVideogame(videogameP) {
 
   var idToSearch = videogameP.id;
+
   var videogameToUpdate = getVideogameById(idToSearch);
 
   if (videogameToUpdate !== undefined) {
     videogameToUpdate.name = videogameP.name;
-    videogameToUpdate.developer = videogameP.developer;
-    videogameToUpdate.gamesystem = videogameP.gamesystem;
-    videogameToUpdate.genre = videogameP.genre;
-    videogameToUpdate.year = videogameP.year;
+    videogameToUpdate.description = videogameP.description;
+    videogameToUpdate.image = videogameP.image;
   }
 
   return videogameToUpdate;
@@ -126,17 +92,6 @@ function deleteVideogame(id) {
   }
 }
 
-/*function stripVideoGames(fields, videogames) {
-
-  var arrayFields = fields.split(',');
-
-  var strippedVideoGameResults = _.map(videogames, function (videogame) {
-    return _.pick(videogame, arrayFields);
-  });
-
-  return strippedVideoGameResults;
-}
-*/
 function initDefaultVideogames(videogamesSet) {
   videogames = videogamesSet.slice();
 }

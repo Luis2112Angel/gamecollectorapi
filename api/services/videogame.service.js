@@ -2,8 +2,8 @@
 
 var _ = require('lodash');
 
-var gamesystemService = require('../services/gamesystem.service');
 var videogameRepository = require('../repositories/videogame.repository');
+var gamesystemRepository = require('../repositories/gamesystem.repository');
 var messageHelper = require('../helpers/message.helper');
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -11,76 +11,99 @@ var messageHelper = require('../helpers/message.helper');
 ////////////////////////////////////////////////////////////////////////////////
 
 // Error Messages
-const VG_SVC_ERR_CREATE_VG_ALREADY_EXISTS_WITH_SAME_NAME = 'Not possible to create videogame. Videogame exists yet for the same gamesystem';
-const VG_SVC_ERR_CREATE_VG_GAMESYSTEM_NOT_FOUND = 'Gamesystem not found inserting a new videogame';
-const VG_SVC_ERR_UPDATE_VG_VIDEOGAME_NOT_FOUND = 'Videogame not found updating a videogame';
-const VG_SVC_ERR_DELETE_VG_VIDEOGAME_NOT_FOUND = 'Videogame not found deleting a videogame';
+const GS_SVC_ERR_CREATE_GS_ALREADY_EXISTS_WITH_SAME_NAME = 'Not possible to create gamesystem. There is a gamesystem with the same name in the system';
+const GS_SVC_ERR_UPDATE_GS_ALREADY_EXISTS_WITH_SAME_NAME = 'Not possible to update gamesystem. There is a gamesystem with the same name to update in the system';
+const GS_SVC_ERR_UPDATE_GS_NOT_FOUND_BY_ID = 'Not possible to update gamesystem. There is NOT a gamesystem with the same id to update'
+const GS_SVC_ERR_DELETE_GS_NOT_FOUND_BY_ID = 'Not possible to delete gamesystem. Gamesystem not found';
+const GS_SVC_ERR_DELETE_VG_EXISTS_ASSOCIATED = 'Not possible to delete gamesystem. There are videogames associated with the gamesystem';
 
 ////////////////////////////////////////////////////////////////////////////////
 // PUBLIC METHODS
 ////////////////////////////////////////////////////////////////////////////////
 
-function getVideogames(params) {
-  var result = videogameRepository.getVideogames(params);
-  return result;
+function getVideoGames(params) {
+  return videogameRepository.getVideoGames(params);
 }
 
 function getVideogameById(id) {
-  var result = videogameRepository.getVideogameById(id);
-  return result;
+  return videogameRepository.getVideogameById(id);
+}
+
+function getVideogameByName(name) {
+  return videogameRepository.getVideogameByName(name);
 }
 
 function createVideogame(params) {
 
-  var result;
-  // Comprobamos si existe el gamesystem asociado
-
-  var gamesystemFound = gamesystemService.getGameSystemByName(params.gamesystem);
-
-  if (!_.isUndefined(gamesystemFound)) {
-
-    // Comproamos que no exista para el mismo gamesystem el juego por nombre
-    var videogamesFound = videogameRepository.getVideogames({ name: params.name, gamesystem: params.gamesystem })
-
-    if (videogamesFound.length == 0) {
-      result = videogameRepository.createVideogame(params);
-    } else {
-      result = messageHelper.buildErrorMessage(VG_SVC_ERR_CREATE_VG_ALREADY_EXISTS_WITH_SAME_NAME);
-    }
+  // Checks if exists a gamesystem with the same name - Using module.exports to call the function to ease the testing
+  var videogameFound = module.exports.getVideogameByName(params.name);
+  if (_.isUndefined(videogameFound)) {
+    return videogameRepository.createVideogame(params);
   } else {
-    result = messageHelper.buildErrorMessage(VG_SVC_ERR_CREATE_VG_GAMESYSTEM_NOT_FOUND);
+    return messageHelper.buildErrorMessage(GS_SVC_ERR_CREATE_GS_ALREADY_EXISTS_WITH_SAME_NAME);
   }
-  return result;
 }
 
 function updateVideogame(params) {
 
-  var result = videogameRepository.updateVideogame(params);
-  if (_.isUndefined(result)) {
-    result = messageHelper.buildErrorMessage(VG_SVC_ERR_UPDATE_VG_VIDEOGAME_NOT_FOUND);
+  var result;
+  // Checks if exists a gamesystem with the same id - Using module.exports to call the function to ease the testing
+  var VideogameFoundById = module.exports.getVideogameById(params.id);
+  if (!_.isUndefined(VideogameFoundById)) {
+
+    // Then checks if exists a gamesystem with the same name. If exists, the id must be the same that the object in params
+    var videogameFoundByName = module.exports.getVideogameByName(params.name);
+
+    if (_.isUndefined(videogameFoundByName) || videogameFoundByName.id === params.id) {
+      result = videogameRepository.updateVideogame(params);
+    } else {
+      result = messageHelper.buildErrorMessage(GS_SVC_ERR_UPDATE_GS_ALREADY_EXISTS_WITH_SAME_NAME);
+    }
+  } else {
+    result = messageHelper.buildErrorMessage(GS_SVC_ERR_UPDATE_GS_NOT_FOUND_BY_ID);
   }
+
   return result;
 }
 
 function deleteVideogame(id) {
 
-  var bDeleted = videogameRepository.deleteVideogame(id);
+  var result;
 
-  if (bDeleted) {
-    return true;
+  // First obtains the game system
+  var myVideogame = module.exports.getVideogameById(id);
+
+  if (!_.isUndefined(myVideogame)) {
+    var filterParams = { videogame: myVideogame.name };
+    var games = videogameRepository.getVideoGames(filterParams);
+
+    if (!_.isUndefined(games) && games.length > 0) {
+      result = messageHelper.buildErrorMessage(GS_SVC_ERR_DELETE_VG_EXISTS_ASSOCIATED);
+    } else {
+      var resultDeletion = gamesystemRepository.deleteGameSystem(id);
+      if (resultDeletion) {
+        result = true;
+      } else {
+        result = messageHelper.buildErrorMessage(GS_SVC_ERR_DELETE_GS_NOT_FOUND_BY_ID);
+      }
+    }
   } else {
-    return messageHelper.buildErrorMessage(VG_SVC_ERR_DELETE_VG_VIDEOGAME_NOT_FOUND);
+    result = messageHelper.buildErrorMessage(GS_SVC_ERR_DELETE_GS_NOT_FOUND_BY_ID);
   }
+
+  return result;
 }
 
 module.exports = {
-  getVideogames,
+  getVideoGames,
   getVideogameById,
+  getVideogameByName,
   createVideogame,
   updateVideogame,
   deleteVideogame,
-  VG_SVC_ERR_CREATE_VG_ALREADY_EXISTS_WITH_SAME_NAME,
-  VG_SVC_ERR_CREATE_VG_GAMESYSTEM_NOT_FOUND,
-  VG_SVC_ERR_UPDATE_VG_VIDEOGAME_NOT_FOUND,
-  VG_SVC_ERR_DELETE_VG_VIDEOGAME_NOT_FOUND
+  GS_SVC_ERR_CREATE_GS_ALREADY_EXISTS_WITH_SAME_NAME,
+  GS_SVC_ERR_UPDATE_GS_ALREADY_EXISTS_WITH_SAME_NAME,
+  GS_SVC_ERR_UPDATE_GS_NOT_FOUND_BY_ID,
+  GS_SVC_ERR_DELETE_GS_NOT_FOUND_BY_ID,
+  GS_SVC_ERR_DELETE_VG_EXISTS_ASSOCIATED
 }
