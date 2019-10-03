@@ -14,7 +14,7 @@ var videogames = [];
 // PUBLIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
-function getVideoGames(params) {
+function getVideogames(params) {
 
   var videogamesResult = videogames.slice();
 
@@ -59,13 +59,13 @@ function getVideoGames(params) {
 
   // Returning only specific fields
   if (params.fields !== undefined) {
-    videogamesResult = stripVideoGames(params.fields, videogamesResult);
+    videogamesResult = stripVideogames(params.fields, videogamesResult);
   }
 
   return videogamesResult;
 }
 
-function getVideoGameById(id) {
+function getVideogameById(id) {
   return videogames.find(element => {
     return element.id === id;
   });
@@ -79,7 +79,7 @@ function getVideoGameByName(name) {
 
 function createVideoGame(videogameP) {
 
-  var newVideoGame = {
+  var newVideogame = {
     id: shortid.generate(),
     name: videogameP.name,
     developer: videogameP.developer,
@@ -89,15 +89,15 @@ function createVideoGame(videogameP) {
     image: videogameP.image
   };
 
-  videogames.push(newVideoGame);
+  videogames.push(newVideogame);
 
-  return getVideoGameById(newVideoGame.id);
+  return getVideogameById(newVideogame.id);
 }
 
-function updateVideoGame(videogameP) {
+function updateVideogame(videogameP) {
 
   var idToSearch = videogameP.id;
-  var videogameToUpdate = getVideoGameById(idToSearch);
+  var videogameToUpdate = getVideogameById(idToSearch);
 
   if (videogameToUpdate !== undefined) {
     videogameToUpdate.name = videogameP.name;
@@ -110,11 +110,11 @@ function updateVideoGame(videogameP) {
   return videogameToUpdate;
 }
 
-function deleteVideoGame(id) {
+function deleteVideogame(id) {
 
   var idToSearch = id;
 
-  var videogameToDelete = getVideoGameById(idToSearch);
+  var videogameToDelete = getVideogameById(idToSearch);
 
   if (videogameToDelete !== undefined) {
     _.remove(videogames, function (element) {
@@ -137,16 +137,16 @@ function deleteVideoGame(id) {
   return strippedVideoGameResults;
 }
 */
-function initDefaultVideoGames(videogamesSet) {
+function initDefaultVideogames(videogamesSet) {
   videogames = videogamesSet.slice();
 }
 
 module.exports = {
-  getVideoGames,
-  getVideoGameById,
-  getVideoGameByName,
-  createVideoGame,
-  updateVideoGame,
-  deleteVideoGame,
-  initDefaultVideoGames
+  getVideogames,
+  getVideogameById,
+  getVideogameByName,
+  createVideogame,
+  updateVideogame,
+  deleteVideogame,
+  initDefaultVideogames
 }

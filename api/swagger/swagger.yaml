@@ -165,12 +165,12 @@ paths:
           in: query  
           type: string
           required: false
-      operationId: getVideoGames
+      operationId: getVideogames
       responses:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/GetVideoGameListResponse"
+            $ref: "#/definitions/GetVideogameListResponse"
         default:
           description: Error
           schema:
@@ -182,13 +182,13 @@ paths:
           name: videogame
           description: The videogame to create.
           schema:
-            $ref: "#/definitions/VideoGame"
-      operationId: createVideoGame
+            $ref: "#/definitions/Videogame"
+      operationId: createVideogame
       responses:
         "201":
           description: Success
           schema:
-            $ref: "#/definitions/GetVideoGameResponse"
+            $ref: "#/definitions/GetVideogameResponse"
         default:
           description: Error
           schema:
@@ -204,12 +204,12 @@ paths:
           type: string
           in: path
           required: true
-      operationId: getVideoGameById
+      operationId: getVideogameById
       responses:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/GetVideoGameResponse"
+            $ref: "#/definitions/GetVideogameResponse"
         default:
           description: Error
           schema:
@@ -227,13 +227,13 @@ paths:
           name: videogame
           description: The videogame to update.
           schema:
-            $ref: "#/definitions/VideoGame"
-      operationId: updateVideoGame
+            $ref: "#/definitions/Videogame"
+      operationId: updateVideogame
       responses:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/GetVideoGameResponse"
+            $ref: "#/definitions/GetVideogameResponse"
         default:
           description: Error
           schema:
@@ -247,7 +247,7 @@ paths:
           type: string
           in: path
           required: true
-      operationId: deleteVideoGame
+      operationId: deleteVideogame
       responses:
         "200":
           description: Success
@@ -263,7 +263,7 @@ paths:
 # complex objects have schema definitions
 definitions:
 
-  VideoGame:
+  Videogame:
     type: object
     properties:
       name:
@@ -291,7 +291,7 @@ definitions:
       - genre
       - year
       
-  GetVideoGameResponse:
+  GetVideogameResponse:
     type: object
     properties:
       id:
@@ -323,14 +323,14 @@ definitions:
       - genre
       - year
       
-  GetVideoGameListResponse:
+  GetVideogameListResponse:
     required:
       - videogames
     properties:
       videogames:
         type: array
         items:
-          $ref: "#/definitions/GetVideoGameResponse"  
+          $ref: "#/definitions/GetVideogameResponse"  
   
   GeneralResponse:
     type: object

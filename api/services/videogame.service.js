@@ -3,7 +3,7 @@
 var _ = require('lodash');
 
 var gamesystemService = require('../services/gamesystem.service');
-//var videogameRepository = require('../repositories/videogame.repository');
+var videogameRepository = require('../repositories/videogame.repository');
 var messageHelper = require('../helpers/message.helper');
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -20,17 +20,17 @@ const VG_SVC_ERR_DELETE_VG_VIDEOGAME_NOT_FOUND = 'Videogame not found deleting a
 // PUBLIC METHODS
 ////////////////////////////////////////////////////////////////////////////////
 
-function getVideoGames(params) {
-  var result = videogameRepository.getVideoGames(params);
+function getVideogames(params) {
+  var result = videogameRepository.getVideogames(params);
   return result;
 }
 
-function getVideoGameById(id) {
-  var result = videogameRepository.getVideoGameById(id);
+function getVideogameById(id) {
+  var result = videogameRepository.getVideogameById(id);
   return result;
 }
 
-function createVideoGame(params) {
+function createVideogame(params) {
 
   var result;
   // Comprobamos si existe el gamesystem asociado
@@ -40,10 +40,10 @@ function createVideoGame(params) {
   if (!_.isUndefined(gamesystemFound)) {
 
     // Comproamos que no exista para el mismo gamesystem el juego por nombre
-    var videogamesFound = videogameRepository.getVideoGames({ name: params.name, gamesystem: params.gamesystem })
+    var videogamesFound = videogameRepository.getVideogames({ name: params.name, gamesystem: params.gamesystem })
 
     if (videogamesFound.length == 0) {
-      result = videogameRepository.createVideoGame(params);
+      result = videogameRepository.createVideogame(params);
     } else {
       result = messageHelper.buildErrorMessage(VG_SVC_ERR_CREATE_VG_ALREADY_EXISTS_WITH_SAME_NAME);
     }
@@ -53,18 +53,18 @@ function createVideoGame(params) {
   return result;
 }
 
-function updateVideoGame(params) {
+function updateVideogame(params) {
 
-  var result = videogameRepository.updateVideoGame(params);
+  var result = videogameRepository.updateVideogame(params);
   if (_.isUndefined(result)) {
     result = messageHelper.buildErrorMessage(VG_SVC_ERR_UPDATE_VG_VIDEOGAME_NOT_FOUND);
   }
   return result;
 }
 
-function deleteVideoGame(id) {
+function deleteVideogame(id) {
 
-  var bDeleted = videogameRepository.deleteVideoGame(id);
+  var bDeleted = videogameRepository.deleteVideogame(id);
 
   if (bDeleted) {
     return true;
@@ -74,11 +74,11 @@ function deleteVideoGame(id) {
 }
 
 module.exports = {
-  getVideoGames,
-  getVideoGameById,
-  createVideoGame,
-  updateVideoGame,
-  deleteVideoGame,
+  getVideogames,
+  getVideogameById,
+  createVideogame,
+  updateVideogame,
+  deleteVideogame,
   VG_SVC_ERR_CREATE_VG_ALREADY_EXISTS_WITH_SAME_NAME,
   VG_SVC_ERR_CREATE_VG_GAMESYSTEM_NOT_FOUND,
   VG_SVC_ERR_UPDATE_VG_VIDEOGAME_NOT_FOUND,
