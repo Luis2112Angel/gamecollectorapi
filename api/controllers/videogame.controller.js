@@ -64,7 +64,7 @@ function getVideoGameById(req, res) {
     }
 }
 
-function deleteVideogame(req, res) {
+function deleteVideoGame(req, res) {
 
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
