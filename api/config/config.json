@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "postgres",
-    "database": "Gamesystem",
+    "database": "APIGamesystemLuis",
     "host": "34.67.113.172",
     "dialect": "postgres",
     "operatorsAliases": false
@@ -18,7 +18,7 @@
   "production": {
     "username": "postgres",
     "password": "postgres",
-    "database": "Gamesystem",
+    "database": "APIGamesystemLuis",
     "host": "34.67.113.172",
     "dialect": "postgres",
     "operatorsAliases": false
