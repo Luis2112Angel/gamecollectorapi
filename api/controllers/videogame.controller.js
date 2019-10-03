@@ -4,7 +4,7 @@ var controllerHelper = require('../helpers/controller.helper');
 const {Videogames} = require('../models');
 
 // Module Name
-const MODULE_NAME = '[Videogame Controller]';
+const MODULE_NAME = '[VideoGame Controller]';
 // Error Messages
 const GS_CT_ERR_GAMESYSTEM_NOT_FOUND = 'Vdeo game not found';
 // Success Messages

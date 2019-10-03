@@ -13,5 +13,5 @@ endpoints_api_service:
    name: advance-engine-250015.appspot.com
 #rollout_strategy: managed
 # Copyright 2015-2016, Google,
-   config_id: 2019-10-02r0 # este config_id se cambia de acuerdo a la fecha actual
+   config_id: 2019-10-01r0 # este config_id se cambia de acuerdo a la fecha actual
 # [END configuration]
